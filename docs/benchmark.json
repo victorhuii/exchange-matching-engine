@@ -1,0 +1,37 @@
+{
+  "machine": "macOS-15.7.3-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "python": "3.14.2",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+  "build_flags": "-std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic",
+  "workload": "seed 42; four synthetic participants; limit prices 9995\u201310005 ticks; quantities 1\u20138; 35% IOC probability; 15% cancellation probability when resting orders exist; one matching thread",
+  "timing": "C++ service time including validation, matching, response JSON serialization and dedup cache; durable path additionally checksums, opens/appends, fsyncs and closes journal. Excludes command generation, command parsing, Python, IPC and HTTP. Single recorded run, no warmup.",
+  "results": {
+    "memory": {
+      "commands": 2000,
+      "commands_per_second": 827187,
+      "latency_us": {
+        "p50": 0.875,
+        "p95": 2.458,
+        "p99": 3.333
+      },
+      "cancels": 292,
+      "ioc": 567,
+      "trades": 884,
+      "max_resting_orders": 30
+    },
+    "durable": {
+      "commands": 2000,
+      "commands_per_second": 19167.6,
+      "latency_us": {
+        "p50": 45.292,
+        "p95": 81.959,
+        "p99": 131.417
+      },
+      "cancels": 292,
+      "ioc": 567,
+      "trades": 884,
+      "max_resting_orders": 30
+    }
+  }
+}

@@ -72,6 +72,26 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(sum(int(b['cash']) for b in self.core.state()['balances'].values()),0)
 
 class PersistenceTests(unittest.TestCase):
+    def test_snapshot_preserves_filled_ids_and_original_responses(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            x=Bridge(tmp);x.submit(order(1,'sell'));filled=x.submit(order(2))
+            x.snapshot();x.close()
+            y=Bridge(tmp)
+            try:
+                self.assertEqual(y.submit(order(2)),filled)
+                with self.assertRaises(ValueError):y.submit({**order(1),'request_id':'new'})
+                self.assertEqual(y.state()['sequence'],2)
+            finally:y.close()
+
+    def test_failed_recovery_blocks_further_commands(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            x=Bridge(tmp);x.submit(order(1))
+            path=Path(tmp,'commands.log');path.write_bytes(path.read_bytes().replace(b'100',b'101',1))
+            try:
+                with self.assertRaises(RuntimeError):x.recover()
+                with self.assertRaises(RuntimeError):x.submit(order(2))
+            finally:x.close()
+
     def test_snapshot_tail_replay_and_dedup(self):
         with tempfile.TemporaryDirectory() as tmp:
             x=Bridge(tmp)

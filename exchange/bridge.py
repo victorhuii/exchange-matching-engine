@@ -69,6 +69,8 @@ class Bridge:
                 raise RuntimeError('matching process disconnected; command may have persisted')
             result = json.loads(response)
             if not result.get('ok'):
+                if result.get('kind') == 'storage':
+                    raise RuntimeError(result.get('error','local storage failed'))
                 raise ValueError(result.get('error','matching command failed'))
             return result
 

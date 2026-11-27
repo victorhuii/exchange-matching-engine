@@ -420,7 +420,10 @@ int main(int argc,char** argv) {
                     auto result=store.submit(parse(line));
                     std::cout<<"{\"ok\":true,\"result\":"<<result<<"}"<<std::endl;
                 }
-            } catch(const std::exception& e) {std::cout<<"{\"ok\":false,\"error\":"<<quote(e.what())<<"}"<<std::endl;}
+            } catch(const std::exception& e) {
+                std::cout<<"{\"ok\":false,\"kind\":"<<quote(dynamic_cast<const std::invalid_argument*>(&e)?"input":"storage")
+                    <<",\"error\":"<<quote(e.what())<<"}"<<std::endl;
+            }
         }
     } catch(const std::exception& e){std::cerr<<e.what()<<std::endl;return 1;}
 }
