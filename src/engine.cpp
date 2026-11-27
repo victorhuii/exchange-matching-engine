@@ -352,7 +352,8 @@ public:
             catch(...){::close(fd);poisoned=true;throw;}::close(fd);
             if(failpoint=="after_journal")::_exit(86);
         }
-        return engine.apply(c);
+        try { return engine.apply(c); }
+        catch(...) { poisoned=true; throw; }
     }
     void save() {
         if(!durable || poisoned)throw std::runtime_error("snapshot requires healthy durable storage");

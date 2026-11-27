@@ -1,0 +1,437 @@
+{
+  "synthetic": true,
+  "events": [
+    {
+      "command": {
+        "type": "order",
+        "request_id": "a",
+        "order_id": "alice-ask",
+        "participant": "alice",
+        "side": "sell",
+        "price": 10001,
+        "quantity": 5
+      },
+      "result": {
+        "sequence": 1,
+        "order_id": "alice-ask",
+        "filled": 0,
+        "resting": 5,
+        "cancelled": 0,
+        "trades": []
+      },
+      "state": {
+        "sequence": 1,
+        "bids": [],
+        "asks": [
+          {
+            "price": 10001,
+            "quantity": 5,
+            "orders": 1
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "alice-ask",
+            "participant": "alice",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 5,
+            "sequence": 1
+          }
+        ],
+        "trades": [],
+        "balances": {}
+      }
+    },
+    {
+      "command": {
+        "type": "order",
+        "request_id": "b",
+        "order_id": "bob-ask",
+        "participant": "bob",
+        "side": "sell",
+        "price": 10001,
+        "quantity": 4
+      },
+      "result": {
+        "sequence": 2,
+        "order_id": "bob-ask",
+        "filled": 0,
+        "resting": 4,
+        "cancelled": 0,
+        "trades": []
+      },
+      "state": {
+        "sequence": 2,
+        "bids": [],
+        "asks": [
+          {
+            "price": 10001,
+            "quantity": 9,
+            "orders": 2
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "alice-ask",
+            "participant": "alice",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 5,
+            "sequence": 1
+          },
+          {
+            "order_id": "bob-ask",
+            "participant": "bob",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 4,
+            "sequence": 2
+          }
+        ],
+        "trades": [],
+        "balances": {}
+      }
+    },
+    {
+      "command": {
+        "type": "order",
+        "request_id": "c",
+        "order_id": "carol-bid",
+        "participant": "carol",
+        "side": "buy",
+        "price": 10001,
+        "quantity": 7
+      },
+      "result": {
+        "sequence": 3,
+        "order_id": "carol-bid",
+        "filled": 7,
+        "resting": 0,
+        "cancelled": 0,
+        "trades": [
+          {
+            "trade_id": 1,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 5,
+            "buyer": "carol",
+            "seller": "alice",
+            "maker": "alice-ask",
+            "taker": "carol-bid"
+          },
+          {
+            "trade_id": 2,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 2,
+            "buyer": "carol",
+            "seller": "bob",
+            "maker": "bob-ask",
+            "taker": "carol-bid"
+          }
+        ]
+      },
+      "state": {
+        "sequence": 3,
+        "bids": [],
+        "asks": [
+          {
+            "price": 10001,
+            "quantity": 2,
+            "orders": 1
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "bob-ask",
+            "participant": "bob",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 2,
+            "sequence": 2
+          }
+        ],
+        "trades": [
+          {
+            "trade_id": 1,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 5,
+            "buyer": "carol",
+            "seller": "alice",
+            "maker": "alice-ask",
+            "taker": "carol-bid"
+          },
+          {
+            "trade_id": 2,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 2,
+            "buyer": "carol",
+            "seller": "bob",
+            "maker": "bob-ask",
+            "taker": "carol-bid"
+          }
+        ],
+        "balances": {
+          "alice": {
+            "cash": "50005",
+            "inventory": -5
+          },
+          "bob": {
+            "cash": "20002",
+            "inventory": -2
+          },
+          "carol": {
+            "cash": "-70007",
+            "inventory": 7
+          }
+        }
+      }
+    },
+    {
+      "command": {
+        "type": "order",
+        "request_id": "d",
+        "order_id": "dave-ioc",
+        "participant": "dave",
+        "side": "buy",
+        "price": 10000,
+        "quantity": 3,
+        "tif": "IOC"
+      },
+      "result": {
+        "sequence": 4,
+        "order_id": "dave-ioc",
+        "filled": 0,
+        "resting": 0,
+        "cancelled": 3,
+        "trades": []
+      },
+      "state": {
+        "sequence": 4,
+        "bids": [],
+        "asks": [
+          {
+            "price": 10001,
+            "quantity": 2,
+            "orders": 1
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "bob-ask",
+            "participant": "bob",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 2,
+            "sequence": 2
+          }
+        ],
+        "trades": [
+          {
+            "trade_id": 1,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 5,
+            "buyer": "carol",
+            "seller": "alice",
+            "maker": "alice-ask",
+            "taker": "carol-bid"
+          },
+          {
+            "trade_id": 2,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 2,
+            "buyer": "carol",
+            "seller": "bob",
+            "maker": "bob-ask",
+            "taker": "carol-bid"
+          }
+        ],
+        "balances": {
+          "alice": {
+            "cash": "50005",
+            "inventory": -5
+          },
+          "bob": {
+            "cash": "20002",
+            "inventory": -2
+          },
+          "carol": {
+            "cash": "-70007",
+            "inventory": 7
+          }
+        }
+      }
+    },
+    {
+      "command": {
+        "type": "order",
+        "request_id": "e",
+        "order_id": "erin-bid",
+        "participant": "erin",
+        "side": "buy",
+        "price": 9999,
+        "quantity": 6
+      },
+      "result": {
+        "sequence": 5,
+        "order_id": "erin-bid",
+        "filled": 0,
+        "resting": 6,
+        "cancelled": 0,
+        "trades": []
+      },
+      "state": {
+        "sequence": 5,
+        "bids": [
+          {
+            "price": 9999,
+            "quantity": 6,
+            "orders": 1
+          }
+        ],
+        "asks": [
+          {
+            "price": 10001,
+            "quantity": 2,
+            "orders": 1
+          }
+        ],
+        "orders": [
+          {
+            "order_id": "bob-ask",
+            "participant": "bob",
+            "side": "sell",
+            "price": 10001,
+            "quantity": 2,
+            "sequence": 2
+          },
+          {
+            "order_id": "erin-bid",
+            "participant": "erin",
+            "side": "buy",
+            "price": 9999,
+            "quantity": 6,
+            "sequence": 5
+          }
+        ],
+        "trades": [
+          {
+            "trade_id": 1,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 5,
+            "buyer": "carol",
+            "seller": "alice",
+            "maker": "alice-ask",
+            "taker": "carol-bid"
+          },
+          {
+            "trade_id": 2,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 2,
+            "buyer": "carol",
+            "seller": "bob",
+            "maker": "bob-ask",
+            "taker": "carol-bid"
+          }
+        ],
+        "balances": {
+          "alice": {
+            "cash": "50005",
+            "inventory": -5
+          },
+          "bob": {
+            "cash": "20002",
+            "inventory": -2
+          },
+          "carol": {
+            "cash": "-70007",
+            "inventory": 7
+          }
+        }
+      }
+    },
+    {
+      "command": {
+        "type": "cancel",
+        "request_id": "f",
+        "order_id": "bob-ask",
+        "participant": "bob"
+      },
+      "result": {
+        "sequence": 6,
+        "order_id": "bob-ask",
+        "filled": 0,
+        "resting": 0,
+        "cancelled": 2,
+        "trades": []
+      },
+      "state": {
+        "sequence": 6,
+        "bids": [
+          {
+            "price": 9999,
+            "quantity": 6,
+            "orders": 1
+          }
+        ],
+        "asks": [],
+        "orders": [
+          {
+            "order_id": "erin-bid",
+            "participant": "erin",
+            "side": "buy",
+            "price": 9999,
+            "quantity": 6,
+            "sequence": 5
+          }
+        ],
+        "trades": [
+          {
+            "trade_id": 1,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 5,
+            "buyer": "carol",
+            "seller": "alice",
+            "maker": "alice-ask",
+            "taker": "carol-bid"
+          },
+          {
+            "trade_id": 2,
+            "sequence": 3,
+            "price": 10001,
+            "quantity": 2,
+            "buyer": "carol",
+            "seller": "bob",
+            "maker": "bob-ask",
+            "taker": "carol-bid"
+          }
+        ],
+        "balances": {
+          "alice": {
+            "cash": "50005",
+            "inventory": -5
+          },
+          "bob": {
+            "cash": "20002",
+            "inventory": -2
+          },
+          "carol": {
+            "cash": "-70007",
+            "inventory": 7
+          }
+        }
+      }
+    }
+  ],
+  "snapshot_sequence": 5,
+  "recovered_sequence": 6,
+  "recovery_identical": true
+}

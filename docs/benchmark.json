@@ -9,11 +9,11 @@
   "results": {
     "memory": {
       "commands": 2000,
-      "commands_per_second": 827187,
+      "commands_per_second": 710080,
       "latency_us": {
-        "p50": 0.875,
-        "p95": 2.458,
-        "p99": 3.333
+        "p50": 0.917,
+        "p95": 2.708,
+        "p99": 4.541
       },
       "cancels": 292,
       "ioc": 567,
@@ -22,11 +22,11 @@
     },
     "durable": {
       "commands": 2000,
-      "commands_per_second": 19167.6,
+      "commands_per_second": 8318.34,
       "latency_us": {
-        "p50": 45.292,
-        "p95": 81.959,
-        "p99": 131.417
+        "p50": 68.291,
+        "p95": 298.375,
+        "p99": 1058.25
       },
       "cancels": 292,
       "ioc": 567,
