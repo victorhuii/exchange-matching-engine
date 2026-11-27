@@ -1,5 +1,9 @@
 # Exchange Matching Engine
 
+<!-- project-navigation:start -->
+[Architecture](docs/ARCHITECTURE.md) · [Design choices](docs/DECISIONS.md) · [Portfolio](docs/PORTFOLIO.md)
+<!-- project-navigation:end -->
+
 A C++20 exchange simulator with price-time priority, durable command handling, materialized snapshots and deterministic replay.
 
 [Portfolio case study](docs/PORTFOLIO.md) · [Architecture and protocol](docs/ARCHITECTURE.md) · [Benchmark evidence](docs/benchmark.json) · [Checks](https://github.com/victorhuii/exchange-matching-engine/actions)
