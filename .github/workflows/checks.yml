@@ -20,4 +20,6 @@ jobs:
       - name: Address and undefined behavior sanitizers
         run: |
           c++ -std=c++20 -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer src/engine.cpp -o build/engine-sanitized
-          build/engine-sanitized --benchmark 2000
+          for profile in mixed deep cancel-burst sweep; do
+            build/engine-sanitized --benchmark 2000 --profile "$profile"
+          done

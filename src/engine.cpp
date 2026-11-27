@@ -361,7 +361,25 @@ public:
     }
 };
 
-std::vector<Command> flow(I count) {
+std::vector<Command> flow(I count,const std::string& profile="mixed") {
+    if(profile!="mixed" && profile!="deep" && profile!="cancel-burst" && profile!="sweep")
+        throw std::invalid_argument("profile must be mixed, deep, cancel-burst or sweep");
+    if(profile!="mixed") {
+        std::vector<Command> out;out.reserve(size_t(count));
+        I makers=(count+1)/2;
+        for(I i=0;i<count;++i) {
+            auto request="profile-r-"+std::to_string(i);
+            auto id="profile-o-"+std::to_string(i);
+            auto owner="agent-"+std::to_string(i%4);
+            if(profile=="deep")out.push_back({"O",request,id,owner,"B","GTC",10000+i,1+i%8});
+            else if(i<makers)out.push_back({"O",request,id,owner,profile=="sweep"?"S":"B","GTC",10000+(profile=="sweep"?i/8:i%32),1});
+            else if(profile=="cancel-burst") {
+                I target=makers-1-(i-makers);
+                out.push_back({"C",request,"profile-o-"+std::to_string(target),"agent-"+std::to_string(target%4),"","",0,0});
+            } else out.push_back({"O",request,id,owner,"B","IOC",10000+makers,8});
+        }
+        return out;
+    }
     std::mt19937 rng(42);Engine e;std::vector<Command> out;
     for(I i=0;i<count;++i) {
         std::string key="flow-"+std::to_string(i+1);auto orders=e.orders();Command c;
@@ -376,10 +394,11 @@ std::vector<Command> flow(I count) {
     return out;
 }
 
-void benchmark(I count,const std::string& directory) {
-    auto stream=flow(count);Store store(directory);
+void benchmark(I count,const std::string& directory,const std::string& profile) {
+    auto stream=flow(count,profile);Store store(directory);
     if(store.engine.sequence)throw std::runtime_error("benchmark data directory must be empty");
-    std::vector<double> times;I cancels=0,ioc=0,max_depth=0;
+    std::string workload;for(const auto& c:stream)workload+=c.canonical()+"\n";
+    std::vector<double> times;times.reserve(size_t(count));I cancels=0,ioc=0,max_depth=0;
     auto start=std::chrono::steady_clock::now();
     for(const auto& c:stream) {
         auto t=std::chrono::steady_clock::now();store.submit(c);
@@ -389,24 +408,34 @@ void benchmark(I count,const std::string& directory) {
     double seconds=std::chrono::duration<double>(std::chrono::steady_clock::now()-start).count();
     std::sort(times.begin(),times.end());
     auto percentile=[&](double p){return times[size_t(std::ceil(p*double(times.size())))-1];};
-    std::cout<<"{\"commands\":"<<count<<",\"commands_per_second\":"<<count/seconds
+    I cash=0,inventory=0;for(const auto& [owner,b]:store.engine.balances){cash+=b.cash;inventory+=b.inventory;}
+    if(cash || inventory)throw std::runtime_error("benchmark balance conservation failed");
+    std::cout<<"{\"commands\":"<<count<<",\"profile\":"<<quote(profile)<<",\"workload_fnv64\":"<<quote(checksum(workload))
+        <<",\"final_state_fnv64\":"<<quote(checksum(store.engine.state()))<<",\"commands_per_second\":"<<count/seconds
         <<",\"latency_us\":{\"p50\":"<<percentile(.50)<<",\"p95\":"<<percentile(.95)<<",\"p99\":"<<percentile(.99)
         <<"},\"cancels\":"<<cancels<<",\"ioc\":"<<ioc<<",\"trades\":"<<store.engine.trades.size()
-        <<",\"max_resting_orders\":"<<max_depth<<"}"<<std::endl;
+        <<",\"max_resting_orders\":"<<max_depth<<",\"final_resting_orders\":"<<store.engine.index.size()
+        <<",\"final_price_levels\":"<<store.engine.bids.size()+store.engine.asks.size()<<",\"cash_conserved\":true,\"inventory_conserved\":true}"<<std::endl;
 }
 
 int main(int argc,char** argv) {
     try {
-        std::string directory,failpoint;I count=0;
+        std::string directory,failpoint,profile="mixed";I count=0;bool emit_workload=false;
         for(int i=1;i<argc;++i) {
             std::string arg=argv[i];
             if(arg=="--data" && i+1<argc)directory=argv[++i];
             else if(arg=="--failpoint" && i+1<argc)failpoint=argv[++i];
             else if(arg=="--benchmark" && i+1<argc)count=integer(argv[++i],1,100000);
+            else if(arg=="--profile" && i+1<argc)profile=argv[++i];
+            else if(arg=="--emit-workload")emit_workload=true;
             else if(arg=="--memory")directory.clear();
             else throw std::invalid_argument("usage: engine [--memory | --data DIRECTORY] [--benchmark N] [--failpoint NAME]");
         }
-        if(count){benchmark(count,directory);return 0;}
+        if(count){
+            if(emit_workload){for(const auto& c:flow(count,profile))std::cout<<c.canonical()<<"\n";return 0;}
+            benchmark(count,directory,profile);return 0;
+        }
+        if(emit_workload || profile!="mixed")throw std::invalid_argument("profile and emit-workload require --benchmark N");
         Store store(directory,failpoint);std::string line;
         while(std::getline(std::cin,line)) {
             try {

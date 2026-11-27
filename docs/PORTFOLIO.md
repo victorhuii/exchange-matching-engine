@@ -205,3 +205,7 @@ python3 -m scripts.demo
 - [Sixty-command replay](demo/replay.json)
 - [Release scope](../PROJECT_SCOPE.md)
 - [README](../README.md)
+
+## Follow-up: stress coverage
+
+Added independently checked deep-book, reverse-cancellation, and multi-maker sweep workloads. Repeated measurements cover 10,000 commands per run across four profiles and two storage modes; 24 raw samples retain source, workload, and final-state identities. The deepest case reaches 10,000 resting orders at distinct prices. [Evidence and timing limits](STRESS_BENCHMARKS.md). These are service-time measurements, not network or production latency.

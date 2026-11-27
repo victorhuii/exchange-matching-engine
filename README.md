@@ -108,3 +108,7 @@ MPLCONFIGDIR=/tmp/exchange-matplotlib python3 scripts/portfolio_assets.py
 ```
 
 This is a separate systems implementation from [MarketLab](https://github.com/victorhuii/market-research-lab), which focuses on market-making research and assumed historical fills.
+
+## Deeper workload evidence
+
+[Repeated stress benchmarks](docs/STRESS_BENCHMARKS.md) cover growing 10,000-level books, cancellation bursts, and multi-maker sweeps in memory and fsync-backed modes. All 24 raw samples are retained with source/workload/state identities; timing excludes transport and does not establish production exchange latency.

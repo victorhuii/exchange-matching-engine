@@ -1,0 +1,787 @@
+{
+  "captured_at": "2026-11-27T14:25:20.983487+00:00",
+  "source_sha256": "be72a1756fa8988b8c3c07ba8b83456ce35d555f3af8088b56f4c30e933d19e8",
+  "machine": "macOS-15.7.3-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.5)",
+  "build_flags": "-std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic",
+  "commands_per_run": 10000,
+  "repeats": 3,
+  "profiles": {
+    "mixed": "Existing seed-42 four-participant mixed limit/IOC/cancel flow.",
+    "deep": "All GTC bids at distinct increasing prices; one new price level per command.",
+    "cancel-burst": "Build ceil(N/2) GTC bids across 32 levels, then cancel in reverse insertion order.",
+    "sweep": "Build ceil(N/2) unit GTC asks across groups of eight per price, then send crossing 8-unit IOC buys."
+  },
+  "timing": "Per-command steady_clock service time includes validation, matching, response JSON and dedup storage. Throughput includes loop instrumentation. Durable mode additionally checksums, opens/appends, fsyncs and closes journal. Excludes generation, TSV parsing, Python, IPC, HTTP, final hashes and conservation checks. Fresh process/store per run, no warmup or CPU affinity. FNV-64 identities are deterministic checksums, not cryptographic proofs.",
+  "limitations": [
+    "Synthetic workload; results depend on compiler, machine, OS and background load.",
+    "Three runs summarize variability, not a confidence interval or cross-machine scalability claim.",
+    "Retained responses/trades grow with accepted commands; no constant-memory claim.",
+    "Memory and durable runs alternate within each repetition; order effects remain possible."
+  ],
+  "summaries": [
+    {
+      "profile": "mixed",
+      "mode": "memory",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 730313,
+        "minimum": 727374,
+        "maximum": 738816
+      },
+      "latency_us": {
+        "p50": {
+          "median": 0.916,
+          "minimum": 0.916,
+          "maximum": 0.917
+        },
+        "p95": {
+          "median": 2.75,
+          "minimum": 2.708,
+          "maximum": 3
+        },
+        "p99": {
+          "median": 5.125,
+          "minimum": 4.916,
+          "maximum": 5.167
+        }
+      },
+      "max_resting_orders": 30,
+      "final_price_levels": 5
+    },
+    {
+      "profile": "mixed",
+      "mode": "durable",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 20861.7,
+        "minimum": 16489.3,
+        "maximum": 22012.9
+      },
+      "latency_us": {
+        "p50": {
+          "median": 42.458,
+          "minimum": 41.583,
+          "maximum": 44.667
+        },
+        "p95": {
+          "median": 71.292,
+          "minimum": 68.5,
+          "maximum": 88.625
+        },
+        "p99": {
+          "median": 104.125,
+          "minimum": 100.125,
+          "maximum": 220.5
+        }
+      },
+      "max_resting_orders": 30,
+      "final_price_levels": 5
+    },
+    {
+      "profile": "deep",
+      "mode": "memory",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 987760,
+        "minimum": 986064,
+        "maximum": 1010970.0
+      },
+      "latency_us": {
+        "p50": {
+          "median": 0.833,
+          "minimum": 0.833,
+          "maximum": 0.834
+        },
+        "p95": {
+          "median": 1.542,
+          "minimum": 1.334,
+          "maximum": 1.667
+        },
+        "p99": {
+          "median": 3.625,
+          "minimum": 2.25,
+          "maximum": 3.667
+        }
+      },
+      "max_resting_orders": 10000,
+      "final_price_levels": 10000
+    },
+    {
+      "profile": "deep",
+      "mode": "durable",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 21352.7,
+        "minimum": 21240.2,
+        "maximum": 21474.3
+      },
+      "latency_us": {
+        "p50": {
+          "median": 42.75,
+          "minimum": 42.417,
+          "maximum": 42.75
+        },
+        "p95": {
+          "median": 68.875,
+          "minimum": 66.958,
+          "maximum": 73.709
+        },
+        "p99": {
+          "median": 103.125,
+          "minimum": 102.791,
+          "maximum": 105.167
+        }
+      },
+      "max_resting_orders": 10000,
+      "final_price_levels": 10000
+    },
+    {
+      "profile": "cancel-burst",
+      "mode": "memory",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 1225600.0,
+        "minimum": 1220830.0,
+        "maximum": 1232110.0
+      },
+      "latency_us": {
+        "p50": {
+          "median": 0.75,
+          "minimum": 0.709,
+          "maximum": 0.75
+        },
+        "p95": {
+          "median": 0.875,
+          "minimum": 0.875,
+          "maximum": 0.875
+        },
+        "p99": {
+          "median": 1.875,
+          "minimum": 1.875,
+          "maximum": 1.917
+        }
+      },
+      "max_resting_orders": 5000,
+      "final_price_levels": 0
+    },
+    {
+      "profile": "cancel-burst",
+      "mode": "durable",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 21342.6,
+        "minimum": 20809.2,
+        "maximum": 21512.1
+      },
+      "latency_us": {
+        "p50": {
+          "median": 42.708,
+          "minimum": 42.583,
+          "maximum": 43.583
+        },
+        "p95": {
+          "median": 70.75,
+          "minimum": 65.833,
+          "maximum": 75.208
+        },
+        "p99": {
+          "median": 114.375,
+          "minimum": 103.292,
+          "maximum": 115.875
+        }
+      },
+      "max_resting_orders": 5000,
+      "final_price_levels": 0
+    },
+    {
+      "profile": "sweep",
+      "mode": "memory",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 753369,
+        "minimum": 738316,
+        "maximum": 779097
+      },
+      "latency_us": {
+        "p50": {
+          "median": 0.791,
+          "minimum": 0.75,
+          "maximum": 0.792
+        },
+        "p95": {
+          "median": 6.333,
+          "minimum": 5.833,
+          "maximum": 6.334
+        },
+        "p99": {
+          "median": 8.125,
+          "minimum": 7.042,
+          "maximum": 9.25
+        }
+      },
+      "max_resting_orders": 5000,
+      "final_price_levels": 0
+    },
+    {
+      "profile": "sweep",
+      "mode": "durable",
+      "runs": 3,
+      "commands_per_second": {
+        "median": 21200.1,
+        "minimum": 20970.2,
+        "maximum": 21653.6
+      },
+      "latency_us": {
+        "p50": {
+          "median": 43,
+          "minimum": 41.25,
+          "maximum": 43.417
+        },
+        "p95": {
+          "median": 71.25,
+          "minimum": 70.792,
+          "maximum": 71.375
+        },
+        "p99": {
+          "median": 127.083,
+          "minimum": 114.25,
+          "maximum": 127.375
+        }
+      },
+      "max_resting_orders": 5000,
+      "final_price_levels": 0
+    }
+  ],
+  "samples": [
+    {
+      "mode": "memory",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 727374,
+      "latency_us": {
+        "p50": 0.917,
+        "p95": 2.75,
+        "p99": 5.125
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 22012.9,
+      "latency_us": {
+        "p50": 41.583,
+        "p95": 68.5,
+        "p99": 100.125
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 738816,
+      "latency_us": {
+        "p50": 0.916,
+        "p95": 2.708,
+        "p99": 5.167
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 20861.7,
+      "latency_us": {
+        "p50": 42.458,
+        "p95": 71.292,
+        "p99": 104.125
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 730313,
+      "latency_us": {
+        "p50": 0.916,
+        "p95": 3,
+        "p99": 4.916
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "mixed",
+      "workload_fnv64": "32fe3eb02b1681ea",
+      "final_state_fnv64": "f0844d9f84caf95d",
+      "commands_per_second": 16489.3,
+      "latency_us": {
+        "p50": 44.667,
+        "p95": 88.625,
+        "p99": 220.5
+      },
+      "cancels": 1511,
+      "ioc": 2955,
+      "trades": 4234,
+      "max_resting_orders": 30,
+      "final_resting_orders": 7,
+      "final_price_levels": 5,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 987760,
+      "latency_us": {
+        "p50": 0.833,
+        "p95": 1.667,
+        "p99": 3.667
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 21352.7,
+      "latency_us": {
+        "p50": 42.75,
+        "p95": 66.958,
+        "p99": 103.125
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 986064,
+      "latency_us": {
+        "p50": 0.834,
+        "p95": 1.334,
+        "p99": 2.25
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 21474.3,
+      "latency_us": {
+        "p50": 42.75,
+        "p95": 68.875,
+        "p99": 102.791
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 1010970.0,
+      "latency_us": {
+        "p50": 0.833,
+        "p95": 1.542,
+        "p99": 3.625
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "deep",
+      "workload_fnv64": "67f10e7d6e1002b7",
+      "final_state_fnv64": "ea30d7e4ecc987e3",
+      "commands_per_second": 21240.2,
+      "latency_us": {
+        "p50": 42.417,
+        "p95": 73.709,
+        "p99": 105.167
+      },
+      "cancels": 0,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 10000,
+      "final_resting_orders": 10000,
+      "final_price_levels": 10000,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 1232110.0,
+      "latency_us": {
+        "p50": 0.709,
+        "p95": 0.875,
+        "p99": 1.875
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 20809.2,
+      "latency_us": {
+        "p50": 43.583,
+        "p95": 75.208,
+        "p99": 115.875
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 1220830.0,
+      "latency_us": {
+        "p50": 0.75,
+        "p95": 0.875,
+        "p99": 1.917
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 21512.1,
+      "latency_us": {
+        "p50": 42.583,
+        "p95": 65.833,
+        "p99": 114.375
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 1225600.0,
+      "latency_us": {
+        "p50": 0.75,
+        "p95": 0.875,
+        "p99": 1.875
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "cancel-burst",
+      "workload_fnv64": "4fba59829d8a6ab9",
+      "final_state_fnv64": "2a8f2c614d3670ba",
+      "commands_per_second": 21342.6,
+      "latency_us": {
+        "p50": 42.708,
+        "p95": 70.75,
+        "p99": 103.292
+      },
+      "cancels": 5000,
+      "ioc": 0,
+      "trades": 0,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 738316,
+      "latency_us": {
+        "p50": 0.792,
+        "p95": 6.333,
+        "p99": 8.125
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 1,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 21200.1,
+      "latency_us": {
+        "p50": 43,
+        "p95": 71.25,
+        "p99": 127.375
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 779097,
+      "latency_us": {
+        "p50": 0.75,
+        "p95": 6.334,
+        "p99": 9.25
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 2,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 20970.2,
+      "latency_us": {
+        "p50": 43.417,
+        "p95": 70.792,
+        "p99": 114.25
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "memory",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 753369,
+      "latency_us": {
+        "p50": 0.791,
+        "p95": 5.833,
+        "p99": 7.042
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    },
+    {
+      "mode": "durable",
+      "repeat": 3,
+      "commands": 10000,
+      "profile": "sweep",
+      "workload_fnv64": "2658291e2d6f0157",
+      "final_state_fnv64": "797dfe8fd8cd8083",
+      "commands_per_second": 21653.6,
+      "latency_us": {
+        "p50": 41.25,
+        "p95": 71.375,
+        "p99": 127.083
+      },
+      "cancels": 0,
+      "ioc": 5000,
+      "trades": 5000,
+      "max_resting_orders": 5000,
+      "final_resting_orders": 0,
+      "final_price_levels": 0,
+      "cash_conserved": true,
+      "inventory_conserved": true
+    }
+  ]
+}
