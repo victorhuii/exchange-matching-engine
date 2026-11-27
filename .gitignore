@@ -7,3 +7,6 @@ __pycache__/
 
 # Generated public demo output
 /site/
+
+# Local Cloudflare tooling state
+.wrangler/
