@@ -209,3 +209,7 @@ python3 -m scripts.demo
 ## Follow-up: stress coverage
 
 Added independently checked deep-book, reverse-cancellation, and multi-maker sweep workloads. Repeated measurements cover 10,000 commands per run across four profiles and two storage modes; 24 raw samples retain source, workload, and final-state identities. The deepest case reaches 10,000 resting orders at distinct prices. [Evidence and timing limits](STRESS_BENCHMARKS.md). These are service-time measurements, not network or production latency.
+
+## Recovery campaign extension
+
+A five-seed mixed-session campaign checked 900 commands through 40 journal-boundary exits, 45 forced post-acknowledgment kills, 40 snapshots and 90 restarts, with 945 full-state comparisons against the independent reference. All 61 prefixes of a final candidate journal record were also tested. These are bounded process/file fixtures, not machine-power-loss or arbitrary-storage-failure guarantees. [Measured evidence](RECOVERY_CAMPAIGN.md).

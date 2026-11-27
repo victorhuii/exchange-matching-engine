@@ -18,7 +18,7 @@ Read PROJECT_SCOPE.md for release acceptance. This project is separate from Mark
 
 ## Verification
 
-20 Python tests and 3 Node frontend checks passed. JavaScript syntax check passed. A 2,000-command C++ run completed with address and undefined-behavior sanitizers. Figures were visually inspected; Markdown links and image dimensions are checked during packaging.
+22 Python tests and 3 Node frontend checks passed. JavaScript syntax check passed. A 2,000-command C++ run completed with address and undefined-behavior sanitizers. Figures were visually inspected; Markdown links and image dimensions are checked during packaging.
 
 Browser access host is unavailable. Actual browser layout/screenshot QA is not verified. The figures are generated evidence charts and an actual engine trace, not UI screenshots. CI is configured; remote results should be checked on GitHub Actions.
 
@@ -31,3 +31,7 @@ Optional figure regeneration requires requirements-assets.txt. Runtime state/bui
 ## Follow-up engineering review
 
 Added repeated 10,000-command mixed, deep-book, reverse-cancellation, and multi-maker sweep measurements. All 24 runs retain raw timings and matching workload/state identities. Peak book depth now reaches 10,000 orders/price levels. See STRESS_BENCHMARKS.md for timing boundaries, source identity, and limitations. All four profiles are exercised under sanitizers.
+
+## Mixed-session recovery campaign
+
+Added five seeded sessions with 900 commands, 40 injected journal-boundary exits, 45 forced post-acknowledgment kills, 40 snapshots, 120 duplicate retries and 90 restarts. All 945 recovered/post-command full-state comparisons matched the independent Python reference. Every byte prefix of a final 60-byte candidate journal record was repaired or deduplicated as specified. See RECOVERY_CAMPAIGN.md for scope and limits.

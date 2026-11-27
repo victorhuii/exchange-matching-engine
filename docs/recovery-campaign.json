@@ -1,0 +1,38 @@
+{
+  "created_at": "2026-11-27T15:07:43.857918+00:00",
+  "environment": {
+    "python": "3.14.2",
+    "platform": "macOS-15.7.3-arm64-arm-64bit-Mach-O"
+  },
+  "source_sha256": "be72a1756fa8988b8c3c07ba8b83456ce35d555f3af8088b56f4c30e933d19e8",
+  "synthetic": true,
+  "mixed": {
+    "seeds": [
+      3,
+      17,
+      29,
+      43,
+      71
+    ],
+    "commands_per_seed": 180,
+    "interruptions_per_seed": 8,
+    "commands": 900,
+    "before_journal_exits": 19,
+    "after_journal_exits": 21,
+    "post_ack_kills": 45,
+    "snapshots": 40,
+    "duplicate_retries": 120,
+    "restarts": 90,
+    "reference_checks": 945
+  },
+  "torn_tail": {
+    "final_record_bytes": 60,
+    "prefix_cuts_tested": 61,
+    "all_repaired_or_deduplicated": true
+  },
+  "limits": [
+    "Bounded seeded process-exit/kill and synthetic byte-prefix tests; not exhaustive fault exploration.",
+    "No power-loss, disk-cache, device failure, short-write/fsync syscall injection, network or live-trading validation.",
+    "A lost acknowledgment can mean a command persisted; retries must use the original request ID."
+  ]
+}
