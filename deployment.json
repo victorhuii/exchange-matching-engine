@@ -1,0 +1,32 @@
+{
+  "repo": "exchange-matching-engine",
+  "title": "Exchange Matching Engine",
+  "summary": "C++20 price-time matching with durable acknowledgments, idempotent retries, snapshots, and deterministic recovery.",
+  "image": "docs/assets/matching-demo.png",
+  "image_kind": "Generated matching demo figure",
+  "architecture": "docs/ARCHITECTURE.md",
+  "portfolio": "docs/PORTFOLIO.md",
+  "ownership": "Original implementation",
+  "evidence": "Independent reference and bounded mixed-session recovery campaign.",
+  "limitation": "Synthetic local exchange; measured throughput is not production venue latency.",
+  "output": "site",
+  "deployment_doc": "docs/DEPLOYMENT.md",
+  "decisions_doc": "docs/DECISIONS.md",
+  "decisions": [
+    [
+      "Integer ticks and quantities",
+      "Make matching and conservation checks deterministic.",
+      "No multi-currency or fractional-price venue model."
+    ],
+    [
+      "Price levels, FIFO queues and indexed cancels",
+      "Expose price priority and arrival priority in explicit data structures.",
+      "One instrument; no live network or queue-position claim."
+    ],
+    [
+      "Journal before acknowledgment and original request IDs",
+      "Recover accepted commands and return the original response after a lost acknowledgment.",
+      "Retained history grows; filesystem durability assumptions still apply."
+    ]
+  ]
+}
